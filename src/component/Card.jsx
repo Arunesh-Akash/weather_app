@@ -68,7 +68,7 @@ const Card = () => {
             <div className='flex justify-between items-center'>
                 <img src={Logo} alt='' className='h-5 w-15' />
                 <p className='text-sm text-gray-700 italic'>{todayDate} {formattedTime} GMT</p>
-                <FaGithub size={28} />
+                <a href='https://github.com/Arunesh-Akash/weather_app'><FaGithub size={28} /></a>
             </div>
             <div className='flex items-center mt-10 gap-3'>
                 <input
