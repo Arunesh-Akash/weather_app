@@ -36,14 +36,16 @@ const Card = () => {
     const [show, setShow] = useState(false);
     const [icon, setIcon] = useState('');
     const [desc, setDesc] = useState('');
-    const [other,setOther]=useState('');
-    const [country,setCountry]=useState('');
+    const [other, setOther] = useState('');
+    const [country, setCountry] = useState('');
+    const [loader, setLoader] = useState(false);
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=60cc857031bbb3f0bc76c880a6b84870`
     const weatherConditionUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`
 
-  
+
 
     async function handleSubmit() {
+        setLoader(true);
         try {
             const response = await axios.get(apiUrl);
             setName(response.data.name);
@@ -58,6 +60,9 @@ const Card = () => {
             setCountry(response.data.sys.country);
             setShow(true);
             setCity('');
+            setTimeout(() => {
+                setLoader(false);
+            }, 5000);
         } catch (error) {
             console.log(error);
         }
@@ -85,51 +90,60 @@ const Card = () => {
             {
                 show && (
                     <>
-                        <div className='flex items-center justify-center mt-10 flex-col'>
-                            <div>
+                        {
+                            loader ?
+                                <div className='flex justify-center items-center mt-10'>
+                                    <span class="loader"></span>
+                                </div> :
+                                <>
+                                    <div className='flex items-center justify-center mt-10 flex-col'>
+                                        <div>
 
-                                <h2 className='font-medium text-gray-700 text-lg'>CURRENT WEATHER</h2>
-                            </div>
-                            <div className='flex items-center justify-center gap-32 mt-8'>
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-black text-xl'>{name}, {country}</h2>
-                                    <p className='text-sm text-gray-700'>Today, {formattedDate}</p>
-                                </div>
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-black text-xl flex items-center justify-center'>{temp} <TbTemperatureCelsius size={20} /></h2>
-                                    <p className='text-sm text-gray-700'>{desc}</p>
-                                </div>
-                                <div className='flex flex-col items-center'>
-                                    <img src={weatherConditionUrl} alt=''/>
-                                    <p className='text-sm text-gray-700 capitalize'>{other}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='flex items-center justify-center mt-10 flex-col'>
-                            <div>
+                                            <h2 className='font-medium text-gray-700 text-lg'>CURRENT WEATHER</h2>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-32 mt-8'>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-black text-xl'>{name}, {country}</h2>
+                                                <p className='text-sm text-gray-700'>Today, {formattedDate}</p>
+                                            </div>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-black text-xl flex items-center justify-center'>{temp} <TbTemperatureCelsius size={20} /></h2>
+                                                <p className='text-sm text-gray-700'>{desc}</p>
+                                            </div>
+                                            <div className='flex flex-col items-center'>
+                                                <img src={weatherConditionUrl} alt='' />
+                                                <p className='text-sm text-gray-700 capitalize'>{other}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='flex items-center justify-center mt-10 flex-col'>
+                                        <div>
 
-                                <h2 className='font-medium text-gray-700 text-lg'>AIR CONDITION</h2>
-                            </div>
-                            <div className='flex items-center gap-32 mt-8'>
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-gray-700 text-lg flex justify-center items-center gap-1'><CiTempHigh size={20} />Real Feel</h2>
-                                    <p className='text-base text-black flex justify-center items-center font-semibold'>{feelLike} <TbTemperatureCelsius size={20} /></p>
-                                </div>
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><FaWind size={20} /> Wind</h2>
-                                    <p className='text-base text-black font-semibold'>{wind} m/s</p>
-                                </div>
+                                            <h2 className='font-medium text-gray-700 text-lg'>AIR CONDITION</h2>
+                                        </div>
+                                        <div className='flex items-center gap-32 mt-8'>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-gray-700 text-lg flex justify-center items-center gap-1'><CiTempHigh size={20} />Real Feel</h2>
+                                                <p className='text-base text-black flex justify-center items-center font-semibold'>{feelLike} <TbTemperatureCelsius size={20} /></p>
+                                            </div>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><FaWind size={20} /> Wind</h2>
+                                                <p className='text-base text-black font-semibold'>{wind} m/s</p>
+                                            </div>
 
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><CiCloudOn size={25} /> Clouds</h2>
-                                    <p className='text-base text-black font-semibold'>{clouds}%</p>
-                                </div>
-                                <div className='flex flex-col items-center'>
-                                    <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><WiHumidity size={25} /> Humidity</h2>
-                                    <p className='text-base text-black font-semibold'>{humidity}%</p>
-                                </div>
-                            </div>
-                        </div>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><CiCloudOn size={25} /> Clouds</h2>
+                                                <p className='text-base text-black font-semibold'>{clouds}%</p>
+                                            </div>
+                                            <div className='flex flex-col items-center'>
+                                                <h2 className='font-medium text-gray-700 text-lg flex items-center justify-center gap-1'><WiHumidity size={25} /> Humidity</h2>
+                                                <p className='text-base text-black font-semibold'>{humidity}%</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                        }
+
                     </>
                 )
             }
